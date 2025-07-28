@@ -28,11 +28,7 @@ function addLink() {
   renderItems();
   linkInput.value = '';
 }
-function deleteItem(index) {
-  sharedItems.splice(index, 1);
-  localStorage.setItem("shared", JSON.stringify(sharedItems));
-  renderItems();
-}
+
 fileInput.addEventListener('change', (e) => {
   const file = e.target.files[0];
   if (!file) return;
