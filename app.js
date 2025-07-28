@@ -8,7 +8,7 @@ const searchInput = document.getElementById('search');
 const PASSWORD = 'admin';
 let isAdmin = false;
 
-// Initiale Ansicht: Admin-Bereich ausblenden
+// Admin-Bereich ausblenden beim Start
 adminArea.style.display = 'none';
 
 passwordInput.addEventListener('input', () => {
@@ -22,7 +22,7 @@ passwordInput.addEventListener('input', () => {
   renderItems();
 });
 
-function addLink() {
+window.addLink = function addLink() {
   const link = linkInput.value.trim();
   if (!link) return;
   const item = {
@@ -34,7 +34,7 @@ function addLink() {
   saveItem(item);
   renderItems();
   linkInput.value = '';
-}
+};
 
 fileInput.addEventListener('change', (e) => {
   const file = e.target.files[0];
@@ -84,7 +84,7 @@ function renderItems() {
       } else {
         div.innerHTML = `<p>📎 ${item.filename}</p><a href="${item.content}" download="${item.filename}">Herunterladen</a>`;
       }
-      // Löschen-Button (Mülleimer) nur für Admin anzeigen
+      // Mülleimer-Button nur für Admin
       if (isAdmin) {
         const deleteBtn = document.createElement('button');
         deleteBtn.innerHTML = '🗑️';
