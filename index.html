@@ -3,27 +3,136 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sharing App</title>
-  <link rel="stylesheet" href="style.css" />
-  <script defer src="app.js"></script>
+  <title>Simple Share</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 1rem;
+    }
+    h1 {
+      text-align: center;
+    }
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .item {
+      padding: 0.5rem;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .item:last-child {
+      border-bottom: none;
+    }
+    input, textarea, button {
+      padding: 0.5rem;
+      margin: 0.25rem 0;
+      width: 100%;
+      font-size: 1rem;
+    }
+    button {
+      background: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button.delete {
+      background: #f44336;
+      width: auto;
+      margin-left: 0.5rem;
+    }
+    .upload-form {
+      margin-top: 1rem;
+      display: none;
+    }
+  </style>
 </head>
 <body>
+  <h1>Simple Share</h1>
   <div class="container">
-    <h1>Simple Share</h1>
+    <input id="search" placeholder="Suche..." />
 
-    <input type="text" id="search" placeholder="Suchen..." />
+    <div id="item-list"></div>
 
-    <div id="upload-area">
-      <input type="password" id="password" placeholder="Passwort" />
+    <div id="password-section">
+      <input type="password" id="password-input" placeholder="Admin-Passwort eingeben" />
       <button onclick="checkPassword()">Bestätigen</button>
-
-      <div id="admin-area" style="display: none;">
-        <input type="text" id="link" placeholder="Text, Link oder Bild-URL..." />
-        <button onclick="addItem()">Teilen</button>
-      </div>
     </div>
 
-    <div id="items"></div>
+    <div class="upload-form" id="upload-form">
+      <textarea id="new-item" placeholder="Text, Link oder Beschreibung..."></textarea>
+      <button onclick="addItem()">Hinzufügen</button>
+    </div>
   </div>
+
+  <script>
+    const PASSWORD = "mein_passwort";
+    let sharedItems = JSON.parse(localStorage.getItem("shared")) || [];
+
+    function renderItems(filter = "") {
+      const list = document.getElementById("item-list");
+      list.innerHTML = "";
+      sharedItems.forEach((item, index) => {
+        if (item.toLowerCase().includes(filter.toLowerCase())) {
+          const div = document.createElement("div");
+          div.className = "item";
+
+          const span = document.createElement("span");
+          span.textContent = item;
+
+          const delBtn = document.createElement("button");
+          delBtn.textContent = "🗑️";
+          delBtn.className = "delete";
+          delBtn.onclick = () => deleteItem(index);
+
+          div.appendChild(span);
+          div.appendChild(delBtn);
+          list.appendChild(div);
+        }
+      });
+    }
+
+    function addItem() {
+      const input = document.getElementById("new-item");
+      const value = input.value.trim();
+      if (value) {
+        sharedItems.unshift(value);
+        localStorage.setItem("shared", JSON.stringify(sharedItems));
+        input.value = "";
+        renderItems(document.getElementById("search").value);
+      }
+    }
+
+    function deleteItem(index) {
+      sharedItems.splice(index, 1);
+      localStorage.setItem("shared", JSON.stringify(sharedItems));
+      renderItems(document.getElementById("search").value);
+    }
+
+    function checkPassword() {
+      const pw = document.getElementById("password-input").value;
+      if (pw === PASSWORD) {
+        document.getElementById("upload-form").style.display = "block";
+        document.getElementById("password-section").style.display = "none";
+      } else {
+        alert("Falsches Passwort");
+      }
+    }
+
+    document.getElementById("search").addEventListener("input", (e) => {
+      renderItems(e.target.value);
+    });
+
+    renderItems();
+  </script>
 </body>
 </html>
