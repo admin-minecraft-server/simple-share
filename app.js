@@ -5,7 +5,7 @@ const linkInput = document.getElementById('link');
 const itemsContainer = document.getElementById('items');
 const searchInput = document.getElementById('search');
 
-const PASSWORD = 'admin_editor';
+const PASSWORD = 'admin';
 
 passwordInput.addEventListener('input', () => {
   if (passwordInput.value === PASSWORD) {
