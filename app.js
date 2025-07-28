@@ -7,12 +7,17 @@ const searchInput = document.getElementById('search');
 
 const PASSWORD = 'admin';
 
+let isAdmin = false;
+
 passwordInput.addEventListener('input', () => {
   if (passwordInput.value === PASSWORD) {
     adminArea.style.display = 'block';
+    isAdmin = true;
   } else {
     adminArea.style.display = 'none';
+    isAdmin = false;
   }
+  renderItems();
 });
 
 function addLink() {
@@ -57,19 +62,36 @@ function getItems() {
   return JSON.parse(localStorage.getItem('shared_items') || '[]');
 }
 
+function deleteItem(id) {
+  const items = getItems().filter(item => item.id !== id);
+  localStorage.setItem('shared_items', JSON.stringify(items));
+  renderItems();
+}
+
 function renderItems() {
   const items = getItems();
   const search = searchInput.value.toLowerCase();
   itemsContainer.innerHTML = '';
-  items.filter(item => item.content.toLowerCase().includes(search))
-       .forEach(item => {
-    const div = document.createElement('div');
-    div.className = 'item';
-    div.innerHTML = item.type === 'link' ?
-      `<a href="${item.content}" target="_blank">🔗 ${item.content}</a>` :
-      `<p>📎 ${item.filename}</p><a href="${item.content}" download="${item.filename}">Herunterladen</a>`;
-    itemsContainer.appendChild(div);
-  });
+  items
+    .filter(item => item.content.toLowerCase().includes(search))
+    .forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'item';
+      if (item.type === 'link') {
+        div.innerHTML = `<a href="${item.content}" target="_blank">🔗 ${item.content}</a>`;
+      } else {
+        div.innerHTML = `<p>📎 ${item.filename}</p><a href="${item.content}" download="${item.filename}">Herunterladen</a>`;
+      }
+      // Löschen-Button nur anzeigen, wenn Admin
+      if (isAdmin) {
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Löschen';
+        deleteBtn.style.marginLeft = '10px';
+        deleteBtn.onclick = () => deleteItem(item.id);
+        div.appendChild(deleteBtn);
+      }
+      itemsContainer.appendChild(div);
+    });
 }
 
 searchInput.addEventListener('input', renderItems);
