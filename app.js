@@ -6,9 +6,9 @@ const itemsContainer = document.getElementById('items');
 const searchInput = document.getElementById('search');
 
 const PASSWORD = 'admin';
-
 let isAdmin = false;
 
+// Passwort-Überprüfung
 passwordInput.addEventListener('input', () => {
   if (passwordInput.value === PASSWORD) {
     adminArea.style.display = 'block';
@@ -82,10 +82,11 @@ function renderItems() {
       } else {
         div.innerHTML = `<p>📎 ${item.filename}</p><a href="${item.content}" download="${item.filename}">Herunterladen</a>`;
       }
-      // Löschen-Button nur anzeigen, wenn Admin
+      // Löschen-Button NUR für Admin anzeigen
       if (isAdmin) {
         const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Löschen';
+        deleteBtn.innerHTML = '🗑️'; // Mülleimer-Icon
+        deleteBtn.title = 'Löschen';
         deleteBtn.style.marginLeft = '10px';
         deleteBtn.onclick = () => deleteItem(item.id);
         div.appendChild(deleteBtn);
@@ -94,5 +95,10 @@ function renderItems() {
     });
 }
 
+// Items immer neu rendern bei Suche
 searchInput.addEventListener('input', renderItems);
+
+// Initialer Zustand
+adminArea.style.display = 'none';
+isAdmin = false;
 renderItems();
