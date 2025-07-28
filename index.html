@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sharing App</title>
+    <script defer src="app.js"></script>
+    <link href="style.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <h1>🧾 Mein Sharing Tool</h1>
+      <input type="text" id="search" placeholder="Suchen..." />
+      <div id="upload-area">
+        <input type="password" id="password" placeholder="Passwort" />
+        <div id="admin-area" style="display:none;">
+          <input type="text" id="link" placeholder="Link einfügen" />
+          <button onclick="addLink()">Link teilen</button>
+          <input type="file" id="file" />
+        </div>
+      </div>
+      <div id="items"></div>
+    </div>
+  </body>
+</html>
