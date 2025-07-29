@@ -1,31 +1,32 @@
 <!DOCTYPE html>
 <html lang="de">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Simple Share</title>
-  <style>
-    body { font-family: sans-serif; background: #f7f7f7; margin: 0; padding: 2em; }
-    #admin-area { margin-bottom: 2em; }
-    .item { background: #fff; padding: 1em; margin-bottom: 1em; border-radius: 5px; display: flex; align-items: center; }
-    .item button { margin-left: 10px; }
-  </style>
-</head>
-<body>
-  <h2>Simple Share</h2>
-  
-  <input type="password" id="password" placeholder="Admin Passwort eingeben" />
-  
-  <div id="admin-area" style="display:none;">
-    <h3>Admin Bereich</h3>
-    <input type="file" id="file" />
-    <input type="text" id="link" placeholder="Link zum Teilen" />
-    <button onclick="addLink()">Link hinzufügen</button>
-  </div>
-  
-  <input id="search" placeholder="Suchen..." />
-  <div id="items"></div>
-  
-  <script src="app.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Sharing</title>
+    <script defer src="app.js"></script>
+    <link href="style.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Mein Sharing Tool</h1>
+      <input type="text" id="search" placeholder="Suchen..." />
+      <div id="upload-area">
+        <input type="password" id="password" placeholder="Passwort" />
+        <div id="admin-area" style="display:none;">
+          <input type="text" id="link" placeholder="Link einfügen" />
+          <button onclick="addLink()">Link teilen</button>
+          
+          <label for="file" class="file-upload-btn">
+            📁 <span id="file-label-text">Datei auswählen</span>
+          </label>
+          <input type="file" id="file" style="display:none;" />
+
+          <input type="text" id="description" placeholder="Beschreibung hinzufügen" />
+          <button onclick="addDescription()">Beschreibung speichern</button>
+        </div>
+      </div>
+      <div id="items"></div>
+    </div>
+  </body>
 </html>
